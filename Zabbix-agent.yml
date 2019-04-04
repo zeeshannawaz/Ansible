@@ -3,21 +3,4 @@
    tasks:
     - name: update apt cache
       apt: update_cache=yes
-      become: false
-
-    - name: Install Zabbix-agent
-      apt: name=zabbix-agent state=present
-      become: false
-
-    - name: Configuring Zabbix Server IP on Agent machines
-      lineinfile:
-      become: true
-       dest=/etc/zabbix/zabbix_agentd.conf
-       regexp="Server=127.0.0.1"
-       line="Server=34.200.230.203"
-      notify:
-       - restart zabbix-agent
-
-    - name: Service Zabbix-Agent Restart
-      service: name=zabbix-agent state=restarted
-      become: true
+      become: yes
