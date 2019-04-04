@@ -3,11 +3,11 @@
    tasks:
     - name: update apt cache
       apt: update_cache=yes
-      become: yes
+      sudo: yes
 
     - name: Install Zabbix-agent
       apt: name=zabbix-agent state=present
-      become: yes
+      sudo: yes
 
     - name: Configuring Zabbix Server IP on Agent machines
       lineinfile:
@@ -19,4 +19,4 @@
 
     - name: Service Zabbix-Agent Restart
       service: name=zabbix-agent state=restarted
-      become: yes
+      sudo: yes
