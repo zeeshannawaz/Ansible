@@ -3,6 +3,7 @@
    tasks:
     - name: update apt cache
       apt: update_cache=yes
+      become: yes
 
     - name: Install Zabbix-agent
       apt: name=zabbix-agent state=present
