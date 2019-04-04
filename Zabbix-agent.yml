@@ -1,11 +1,19 @@
- - name: Zabbix Agent Installation
-   hosts: all
+---
+ - hosts: all
    tasks:
-    - name: Install dbserver packages
-      action: apt pkg={{item}} state=latest  update_cache=yes
-      with_items:
-        - mysql-server-5.6
-        - mysql-client-5.6
-        - python-mysqldb
-      become: yes 
-      notify: restart mysql
+    - name: update apt cache
+      apt: update_cache=yes
+
+    - name: Install Zabbix-agent
+      apt: name=zabbix-agent state=present
+
+    - name: Configuring Zabbix Server IP on Agent machines
+      lineinfile:
+       dest=/etc/zabbix/zabbix_agentd.conf
+       regexp="Server=127.0.0.1"
+       line="Server=34.200.230.203"
+      notify:
+       - restart zabbix-agent
+
+    - name: Service Zabbix-Agent Restart
+      service: name=zabbix-agent state=restarted
