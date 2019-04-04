@@ -1,5 +1,5 @@
 ---
- - hosts: 10.142.0.6
+ - hosts: all
    tasks:
     - name: update apt cache
       apt: update_cache=yes
@@ -17,54 +17,3 @@
 
     - name: Service Zabbix-Agent Restart
       service: name=zabbix-agent state=restarted
-
-
-
-ansible-playbook AWSservers zabbix-agent.yml
-
-=========================================================================================================================
-
-For generate Key
-================
-
-*-ssh-keygen -t rsa on master server
-
-*-ssh remote server with key [for initialize]
-
-*-copy "id_rsa.pub" key and paste on remote hosts (/root/.ssh/authorized_keys) 
-
-*- allow public ip of server in remote server Security Group
-
-*- Access remote server with Public IP
-
-
-*- Add IP of Remote host in anisible hosts file
-[AWSservers]
-18.207.228.231  ansible_ssh_user=root
-10.142.0.6 ansible_ssh_user=root
-
-
-*-Ansible command
-ansible AWSservers -m ping -vvv
-ansible all -m ping
-
-=====================================
-if apt-get update not update then add outbound rule
-OR
-ping 8.8.8.8 not working
-
-All traffic 0.0.0.0/0
-====================================================
-
-if error occur
-
-FAILED! => {"changed": false, "failed": true, "module_stderr": "", "module_stdout": "bash: /usr/bin/python: No such file or directory\r\n", "msg": "MODULE FAILURE", "parsed": false}
-
-then install python on remote server
-
-apt-get install python
-
-
-
-
-
