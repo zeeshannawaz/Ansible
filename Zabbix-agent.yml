@@ -1,5 +1,5 @@
----
- - hosts: all
+ - name: Zabbix Agent Installation
+   hosts: all
    tasks:
     - name: update apt cache
       apt: update_cache=yes
