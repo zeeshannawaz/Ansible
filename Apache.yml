@@ -7,7 +7,7 @@
   - name: Install apache
     apt: 
       name={{ item }} 
-      state=latest
+      state=installed
     with_items:
      - apache2
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
@@ -15,7 +15,7 @@
   - name: Install httpd
     yum: 
       name={{ item }} 
-      state=latest
+      state=installed
     with_items:
      - httpd
     when: ansible_distribution == 'Amazon Linux AMI' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
