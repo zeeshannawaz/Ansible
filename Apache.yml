@@ -1,14 +1,35 @@
 ---
- - hosts: all
-   tasks:
-    - name: update apt cache
-      apt: update_cache=yes
-      become: yes
+- hosts: all
+  become: true
+  connection: ssh 
 
-    - name: Install Apache2
-      apt: name=apache2 state=present
-      become: yes
+  tasks:
+  - name: Install apache
+    apt: 
+      name: {{ item }} 
+      state: latest
+    with_items:
+     - apache2
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
-    - name: Service Apache2 Restart
-      service: name=apache2 state=restarted
-      become: yes
+  - name: Install httpd
+    yum: 
+      name: {{ item }} 
+      state: latest
+    with_items:
+     - httpd
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: restart apache
+    service: 
+      name: apache2 
+      state: started 
+      enabled: yes
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: restart httpd
+    service: 
+      name: httpd 
+      state: started 
+      enabled: yes
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
