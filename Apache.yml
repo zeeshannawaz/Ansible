@@ -18,7 +18,7 @@
       state=latest
     with_items:
      - httpd
-    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_distribution == 'Amazon Linux AMI' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
   - name: restart apache
     service: 
@@ -32,4 +32,4 @@
       name=httpd 
       state=started 
       enabled=yes
-    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_distribution == 'Amazon Linux AMI' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
