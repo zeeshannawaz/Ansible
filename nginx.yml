@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: true
+  connection: ssh 
+
+  tasks:
+  - name: Install Nginx on Ubuntu OR Debian
+    apt: 
+      name={{ item }} 
+      state=latest
+    with_items:
+     - nginx
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - name: Install Nginx on Amazon OR Centos OR Redhat
+    yum: 
+      name={{ item }} 
+      state=installed
+    with_items:
+     - nginx
+    when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+  - name: restart Nginx
+    service: 
+      name=nginx 
+      state=started 
+      enabled=yes
+      
