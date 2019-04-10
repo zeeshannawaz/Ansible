@@ -1,12 +1,27 @@
 ---
  - hosts: all
+   become: true
+   connection: ssh
+   
    tasks:
     - name: update apt cache
       apt: update_cache=yes
-      become: yes
 
-    - name: Install Zabbix-agent
-      apt: name=zabbix-agent state=present
+    - name: Install Zabbix-agent on Ubuntu OR Debian
+      apt: 
+          name={{ item }}
+          state=latest
+      with_items:
+        - zabbix-agent
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      
+    - name: Install Zabbix-agent on Amazon OR Centos OR Redhat
+      yum: 
+          name={{ item }}
+          state=latest
+      with_items:
+        - zabbix-agent 
+      
 
     - name: Configuring Zabbix Server IP on Agent machines
       lineinfile:
@@ -15,5 +30,8 @@
        line="Server=34.200.230.203"
 
     - name: Service Zabbix-Agent Restart
-      service: name=zabbix-agent state=restarted
-      become: yes
+      service: 
+         name=zabbix-agent 
+         state=restarted
+         enabled=yes
+     
