@@ -1,0 +1,32 @@
+---
+ - hosts: all
+   become: true
+   connection: ssh
+   
+   tasks:
+    - name: update apt cache
+      apt: update_cache=yes
+
+    - name: Install Mysql on Ubuntu OR Debian
+      apt: 
+          name={{ item }}
+          state=latest
+      with_items:
+        - mysql-server
+        - mysql-client
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      
+    - name: Install Mysql on Amazon OR Centos OR Redhat
+      yum: 
+          name={{ item }}
+          state=latest
+      with_items:
+        - mysql-server
+        - mysql-client
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+    - name: Service Zabbix-Agent Restart
+      service: 
+         name=mysql 
+         state=restarted
+         enabled=yes
