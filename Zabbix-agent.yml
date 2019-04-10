@@ -21,6 +21,7 @@
           state=latest
       with_items:
         - zabbix-agent 
+      when: ansible_distribution == 'Amazon' or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
       
 
     - name: Configuring Zabbix Server IP on Agent machines
